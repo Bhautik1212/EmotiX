@@ -1,0 +1,1000 @@
+# PROJECT: EmotiX — Smart Mental Health Counselling System Using Multimodal AI
+
+## ROLE AND RESPONSIBILITIES
+
+Act as a senior full-stack software engineer, backend architect, database engineer, AI/ML engineer, security engineer, UI/UX developer, and software tester.
+
+Your task is to transform my existing EmotiX frontend into a complete, functional, secure, database-connected, full-stack web application.
+
+You have access to my existing frontend file:
+
+`EmotiX.html`
+
+This file is the starting point for the implementation.
+
+Do not simply generate a plan, provide sample code, or explain what I should do. Inspect my existing project, implement the necessary changes, create all required files, configure the backend and database, connect every frontend module to real backend APIs, and test the complete application.
+
+Work directly in the project workspace wherever your environment supports file editing and terminal execution.
+
+If something is missing, make a sensible engineering decision, document it, and continue implementing the application.
+
+Do not stop after creating the frontend, backend skeleton, database models, or API routes. The objective is a working end-to-end application.
+
+---
+
+# 1. EXISTING PROJECT REQUIREMENTS
+
+My application is called EmotiX.
+
+It is a smart mental health counselling and wellbeing assessment system that combines multiple sources of information to provide a unified wellbeing assessment.
+
+The existing frontend contains the following sections:
+
+1. Home page and navigation.
+2. Project introduction and features.
+3. Behavioural assessment form.
+4. AI counselling chatbot called Dr. EmotiX.
+5. Facial emotion analysis using a webcam.
+6. Voice emotion analysis using a microphone.
+7. Multimodal severity fusion engine.
+8. Results and analytics dashboard.
+9. Emergency safety interface.
+10. Project architecture, model evaluation, and team information.
+
+Inspect the entire HTML file, including all CSS, JavaScript, forms, event handlers, modal dialogs, charts, and interactive components.
+
+Identify which functions are already working, which functions are simulated, which functions are incomplete, and which functions require a backend.
+
+Preserve the existing EmotiX branding, dark clinical-tech theme, green accent colour, typography, navigation, responsive layout, cards, charts, and overall visual identity.
+
+Do not replace the current interface with a generic dashboard template.
+
+Do not remove existing project information, team details, assessment fields, model evaluation tables, or feature sections without a clear technical reason.
+
+The application must remain responsive on desktop, tablets, and mobile devices.
+
+If the current frontend uses plain HTML, CSS, and JavaScript, determine the least disruptive way to connect it to the backend. A React migration is permitted if genuinely necessary, but it must preserve the existing design and functionality.
+
+Prefer incremental migration over a complete rewrite.
+
+---
+
+# 2. REQUIRED TECHNOLOGY STACK
+
+Use the following architecture unless the existing project contains a compatible implementation that can be preserved.
+
+## Frontend
+
+- HTML, CSS, and JavaScript for the existing frontend, or React 19 with Vite if migrating the existing interface.
+- Reuse existing CSS and UI components wherever possible.
+- Fetch API or Axios for HTTP requests.
+- Recharts if React is used and existing charts need to be integrated.
+- Browser MediaDevices API for camera and microphone access.
+- MediaRecorder API for supported audio/video recording.
+- JWT-based authentication integration.
+- Responsive design and accessible form controls.
+
+Do not migrate to React simply to follow a technology preference if the current frontend can be maintained reliably.
+
+## Backend
+
+- Python 3.12 or another compatible, supported Python version.
+- FastAPI.
+- Uvicorn.
+- SQLAlchemy 2.x.
+- Alembic database migrations.
+- Pydantic 2.x.
+- SQLite for local development.
+- PostgreSQL compatibility for production deployment.
+- JWT access tokens and secure password hashing.
+- Argon2 or bcrypt through a maintained password-hashing library.
+- Python logging and structured error responses.
+- Automated testing with pytest and HTTPX.
+
+## AI and machine learning
+
+Use the following technologies where appropriate:
+
+- Scikit-learn for behavioural risk modelling.
+- VADER or TextBlob for baseline text sentiment analysis.
+- A configurable LLM provider for conversational responses.
+- TensorFlow/Keras or a compatible inference framework for facial emotion classification.
+- Librosa and Scikit-learn for audio feature extraction and voice classification.
+- NumPy and Pandas for numerical analysis where required.
+
+Do not install unnecessary packages.
+
+Use compatible, pinned dependencies where practical.
+
+Create a clear separation between the web application, database, AI inference modules, and external AI providers.
+
+---
+
+# 3. PROJECT STRUCTURE
+
+Inspect the current project before creating files.
+
+Organise the application into a maintainable structure similar to the following:
+
+EmotiX/
+│
+├── frontend/
+│   ├── index.html
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── hooks/
+│   │   ├── utils/
+│   │   └── styles/
+│   ├── package.json
+│   └── .env.example
+│
+├── backend/
+│   ├── app/
+│   │   ├── main.py
+│   │   ├── core/
+│   │   │   ├── config.py
+│   │   │   ├── security.py
+│   │   │   └── logging.py
+│   │   ├── api/
+│   │   │   ├── dependencies.py
+│   │   │   └── routes/
+│   │   │       ├── auth.py
+│   │   │       ├── users.py
+│   │   │       ├── assessments.py
+│   │   │       ├── behaviour.py
+│   │   │       ├── chat.py
+│   │   │       ├── face.py
+│   │   │       ├── voice.py
+│   │   │       ├── dashboard.py
+│   │   │       └── reports.py
+│   │   ├── models/
+│   │   ├── schemas/
+│   │   ├── services/
+│   │   ├── ml/
+│   │   │   ├── behaviour.py
+│   │   │   ├── sentiment.py
+│   │   │   ├── face_emotion.py
+│   │   │   ├── voice_emotion.py
+│   │   │   └── fusion.py
+│   │   ├── db/
+│   │   │   ├── session.py
+│   │   │   └── base.py
+│   │   └── tests/
+│   │
+│   ├── alembic/
+│   ├── requirements.txt
+│   └── .env.example
+│
+├── docs/
+│   ├── API.md
+│   ├── DATABASE.md
+│   └── DEPLOYMENT.md
+│
+├── .gitignore
+├── README.md
+└── docker-compose.yml
+
+This structure is a reference, not a reason to duplicate or unnecessarily reorganise existing files.
+
+Keep the frontend and backend clearly separated.
+
+Create every required file with a complete implementation. Do not leave empty modules or placeholder functions.
+
+---
+
+# 4. DATABASE IMPLEMENTATION
+
+Create a real relational database using SQLAlchemy.
+
+SQLite must work locally without requiring a paid database service.
+
+Use Alembic migrations so that database changes can be managed safely.
+
+Design the database with the following entities.
+
+## A. Users
+
+Fields:
+
+- id: primary key.
+- full_name.
+- email: unique and indexed.
+- password_hash: nullable for supported OAuth-only accounts.
+- is_active.
+- is_verified.
+- created_at.
+- updated_at.
+- last_login_at.
+- consent_version.
+- consent_updated_at.
+
+Never store plaintext passwords.
+
+Do not collect profile details that are not necessary for the application.
+
+## B. Assessment Sessions
+
+Fields:
+
+- id.
+- user_id.
+- status.
+- started_at.
+- completed_at.
+- overall_score.
+- risk_band.
+- algorithm_version.
+- created_at.
+
+An assessment session must belong to its authenticated owner.
+
+## C. Behavioural Assessments
+
+Fields:
+
+- id.
+- assessment_id.
+- age, if necessary for the selected model.
+- occupation category, if needed.
+- sleep_hours.
+- sleep_quality.
+- perceived_stress.
+- physical_activity.
+- daily_steps.
+- resting_heart_rate.
+- systolic_bp.
+- diastolic_bp.
+- height_cm and weight_kg only if justified by the assessment.
+- calculated_score.
+- risk_band.
+- model_version.
+- created_at.
+
+Validate all numerical inputs on both the frontend and backend.
+
+Do not assume that physical measurements establish a mental health diagnosis.
+
+## D. Chat Sessions
+
+Fields:
+
+- id.
+- assessment_id.
+- user_id.
+- started_at.
+- ended_at.
+- message_count.
+- analysis_summary.
+- sentiment_score.
+- emotion_label.
+- severity_score.
+- crisis_flag.
+
+## E. Chat Messages
+
+Fields:
+
+- id.
+- chat_session_id.
+- sender_role.
+- message_text.
+- sentiment_score.
+- emotion_label.
+- created_at.
+
+Only retain message text when the user has explicitly consented to its storage.
+
+Otherwise, retain the minimum necessary derived data and session metadata.
+
+Never expose one user's messages to another user.
+
+## F. Facial Analysis Results
+
+Fields:
+
+- id.
+- assessment_id.
+- dominant_emotion.
+- emotion_probabilities_json.
+- confidence_score.
+- analysis_duration_seconds.
+- model_version.
+- created_at.
+
+Store derived analysis results by default rather than raw video.
+
+Do not store webcam recordings unless a separate, explicit, informed consent process and a justified retention policy exist.
+
+## G. Voice Analysis Results
+
+Fields:
+
+- id.
+- assessment_id.
+- dominant_emotion.
+- emotion_probabilities_json.
+- voice_stress_score.
+- confidence_score.
+- duration_seconds.
+- model_version.
+- created_at.
+
+Do not permanently store raw audio by default.
+
+## H. Fused Assessment Results
+
+Fields:
+
+- id.
+- assessment_id.
+- behaviour_score.
+- chat_score.
+- facial_score.
+- voice_score.
+- overall_score.
+- risk_band.
+- contributing_factors_json.
+- recommendations_json.
+- confidence_or_coverage.
+- algorithm_version.
+- created_at.
+
+Make it possible to explain how a score was calculated.
+
+## I. Audit Events
+
+Record security-relevant events such as:
+
+- Login attempts.
+- Account changes.
+- Consent changes.
+- Assessment creation and deletion.
+- Report generation.
+- Administrative actions, if an administrator feature is implemented.
+
+Do not log passwords, access tokens, raw private messages, audio content, or other sensitive payloads.
+
+Add appropriate foreign keys, indexes, uniqueness constraints, and cascading-delete rules.
+
+Define an appropriate data-retention policy.
+
+Provide a safe way to delete an account and its associated personal data.
+
+Use database transactions for operations that must succeed or fail together.
+
+Do not create a second database or duplicate user table if an equivalent, correctly implemented entity already exists.
+
+---
+
+# 5. AUTHENTICATION AND USER ACCOUNTS
+
+Implement working registration, login, logout, and session handling.
+
+Required functionality:
+
+1. User registration.
+2. Email validation.
+3. Duplicate-email detection.
+4. Secure password hashing.
+5. Login with email and password.
+6. JWT access-token generation.
+7. Token expiry.
+8. Protected backend routes.
+9. Current-user endpoint.
+10. Logout and client-side session cleanup.
+11. Password change.
+12. Password reset workflow, if an email provider is configured.
+13. Account deletion.
+14. Optional Google OAuth, only when properly configured.
+
+Use short-lived access tokens and an appropriate secure session strategy.
+
+If using cookies, configure HttpOnly, Secure in production, SameSite, and CSRF protections as applicable.
+
+If using bearer tokens, avoid storing sensitive long-lived credentials in localStorage.
+
+Never expose signing secrets or OAuth client secrets in frontend JavaScript.
+
+Never accept a user ID supplied by the browser as proof of ownership.
+
+Derive the authenticated user from the validated session or token.
+
+For every protected resource, verify that the authenticated user owns it.
+
+Implement rate limits for authentication endpoints and prevent common authentication vulnerabilities.
+
+Add user-friendly login and registration interfaces consistent with the existing EmotiX theme.
+
+A user must be able to register, sign in, refresh the page, and retrieve their own saved dashboard data.
+
+If authentication requires an email service or OAuth credentials, implement the integration and document the required configuration. Do not pretend that an unconfigured external service works.
+
+---
+
+# 6. BEHAVIOURAL ASSESSMENT MODULE
+
+Connect the existing Behaviour Analysis form to a real FastAPI endpoint.
+
+Implement:
+
+POST /api/v1/behaviour/analyze
+
+The endpoint must:
+
+1. Authenticate the user.
+2. Validate the submitted form.
+3. Validate numerical ranges.
+4. Apply a documented scoring algorithm or load a genuine trained model.
+5. Calculate a reproducible result.
+6. Return a structured JSON response.
+7. Save the assessment result when consent and session requirements are satisfied.
+8. Associate the record with the authenticated user.
+9. Return meaningful validation errors.
+
+Use the existing fields:
+
+- Age.
+- Gender, if needed and justified.
+- Occupation.
+- Sleep duration.
+- Sleep quality.
+- Stress level.
+- Physical activity.
+- Daily steps.
+- Resting heart rate.
+- Systolic blood pressure.
+- Diastolic blood pressure.
+- Height and weight, only if relevant.
+
+Create a scoring service separate from the API route.
+
+If a trained behavioural model is available, inspect its feature requirements, preprocessing, expected input format, and output before using it.
+
+If a trained model is not available, implement a transparent, deterministic rule-based prototype and identify it as such.
+
+Do not fabricate a model, claim clinical validation, or invent prediction accuracy.
+
+Explain the contribution of each feature to the result.
+
+Display the result in the existing frontend.
+
+Show the score, explanation, limitations, and recommendations.
+
+Do not treat a lifestyle-based heuristic as a medical diagnosis.
+
+---
+
+# 7. AI COUNSELLING CHATBOT
+
+Connect the Dr. EmotiX chatbot to the backend.
+
+Implement:
+
+POST /api/v1/chat/sessions
+
+POST /api/v1/chat/message
+
+GET /api/v1/chat/sessions
+
+GET /api/v1/chat/sessions/{session_id}/messages
+
+POST /api/v1/chat/sessions/{session_id}/finish
+
+The chatbot must support:
+
+1. Starting a conversation.
+2. Sending a message.
+3. Receiving a contextual response.
+4. Maintaining conversation history when storage is consented to.
+5. Analysing text sentiment.
+6. Identifying possible emotional themes.
+7. Calculating a clearly labelled text-based screening score.
+8. Detecting possible crisis language.
+9. Returning structured responses.
+10. Updating the existing frontend analysis panel.
+11. Displaying loading, error, and retry states.
+12. Saving consented conversation data.
+13. Finishing a chat and continuing the assessment.
+
+Create a chatbot service that separates sentiment analysis, safety detection, response generation, and persistence.
+
+Use VADER or TextBlob for baseline sentiment analysis when appropriate.
+
+Implement an LLM adapter for a configurable provider, such as Gemini through OpenRouter or another supported service.
+
+Read the API key from the backend environment.
+
+Never call a private LLM API directly from the browser.
+
+If no LLM key is configured, provide a clearly identified fallback response system so the core application remains testable.
+
+Do not claim that the fallback is an LLM.
+
+The fallback must provide useful, empathetic, nonjudgmental responses rather than merely repeating the user's message.
+
+Do not diagnose mental health conditions or prescribe medication.
+
+Do not claim that sentiment analysis can reliably determine someone's mental state.
+
+Treat NLP results as uncertain signals that may be wrong.
+
+---
+
+# 8. CRISIS DETECTION AND EMERGENCY SAFETY
+
+Implement a dedicated safety service for potentially urgent messages.
+
+The service should identify possible expressions of self-harm, suicidal intent, immediate danger, and other urgent safety concerns.
+
+Do not rely exclusively on a simple list of keywords.
+
+Use context-sensitive rules and a configurable safety classifier where available.
+
+Implement an appropriate escalation flow.
+
+When a potentially urgent message is detected:
+
+1. Display a clear, compassionate safety message.
+2. Ask an appropriate immediate-safety question where relevant.
+3. Encourage contacting local emergency services or a trusted person.
+4. Present verified crisis resources relevant to the user's location when available.
+5. Avoid continuing ordinary chatbot responses as though nothing happened.
+6. Do not automatically diagnose the user.
+7. Do not automatically contact third parties or emergency services without an explicitly designed, lawful, consent-aware process.
+
+For India, verify current official emergency and mental health support information before publishing numbers.
+
+Do not invent helpline numbers.
+
+Make crisis resources configurable by country or region.
+
+Never represent an automated chatbot as a replacement for a trained mental health professional.
+
+Crisis detection must take priority over ordinary conversational analysis.
+
+---
+
+# 9. FACIAL EMOTION ANALYSIS
+
+Connect the existing webcam interface to a genuine facial emotion inference pipeline.
+
+The existing interface describes a 20-second facial recording.
+
+Preserve that interaction unless there is a technical reason to improve it.
+
+Implement:
+
+POST /api/v1/face/analyze
+
+Use the browser camera only after the user explicitly grants permission.
+
+The interface must include:
+
+- Camera permission handling.
+- Start camera.
+- Stop camera.
+- Recording timer.
+- Recording progress.
+- Recording completion.
+- Analyse button.
+- Loading indicator.
+- Error messages.
+- Analysis results.
+- Retry option.
+
+Use a genuine, compatible facial emotion model if its weights are available.
+
+Inspect the model's expected input shape, image preprocessing, supported emotion classes, and output format.
+
+Do not invent model weights or pretend that a random result is a genuine prediction.
+
+If a model file is missing, create a clean model-loading interface that reports the missing dependency and explain how to supply the correct model.
+
+The system must still run in a documented demo mode, but simulated outputs must be clearly labelled.
+
+Where possible, process frames locally in the browser or transmit only the minimum data needed for inference.
+
+If frames must be sent to the backend, use an appropriate upload format, enforce file-size limits, validate the input, and delete temporary files after processing.
+
+Do not permanently store raw video by default.
+
+Return a structured result such as:
+
+{
+  "dominant_emotion": "neutral",
+  "emotion_probabilities": {
+    "happy": 0.25,
+    "sad": 0.15,
+    "angry": 0.05,
+    "fear": 0.05,
+    "surprise": 0.10,
+    "disgust": 0.02,
+    "neutral": 0.38
+  },
+  "confidence": 0.38,
+  "model_version": "configured-model-version",
+  "mode": "model"
+}
+
+The values above are illustrative only. Never return these example values as a real inference result.
+
+Validate model outputs and handle cases where no face is detected.
+
+Do not claim that facial expressions establish a person's true emotions or diagnose a mental health condition.
+
+---
+
+# 10. VOICE EMOTION ANALYSIS
+
+Connect the existing microphone interface to the backend.
+
+The existing interface describes a 15-second voice sample.
+
+Implement:
+
+POST /api/v1/voice/analyze
+
+Required features:
+
+- Request microphone permission.
+- Start recording.
+- Stop recording.
+- Display a timer.
+- Display recording progress.
+- Preview the recording when supported.
+- Allow users to discard and rerecord.
+- Upload audio securely when analysis requires backend processing.
+- Validate audio duration, format, size, and content.
+- Extract acoustic features.
+- Return structured model results.
+- Handle unsupported formats and missing model files.
+- Release microphone resources when recording ends.
+- Delete temporary audio after analysis unless a separate retention policy and explicit consent justify storage.
+
+If a trained MFCC + SVM model is available, use the correct preprocessing pipeline and model artefacts.
+
+Do not retrain a model on arbitrary sample data during ordinary API requests.
+
+If model weights are unavailable, provide a clearly labelled demo mode or a well-defined unavailable response.
+
+Never report a fabricated accuracy percentage.
+
+Example response:
+
+{
+  "dominant_emotion": "neutral",
+  "emotion_probabilities": {},
+  "stress_score": null,
+  "confidence": null,
+  "model_version": "configured-model-version",
+  "mode": "model"
+}
+
+Populate the example fields only with actual results.
+
+A stress score may be returned only when a defensible, documented model or algorithm supports it.
+
+Do not claim that voice characteristics reliably establish a person's mental health condition.
+
+---
+
+# 11. MULTIMODAL SEVERITY FUSION ENGINE
+
+Build a dedicated, testable fusion engine.
+
+Implement:
+
+POST /api/v1/assessments/{assessment_id}/finalize
+
+GET /api/v1/assessments/{assessment_id}/result
+
+The engine must combine the available outputs from:
+
+1. Behavioural assessment.
+2. Chat text analysis.
+3. Facial emotion analysis.
+4. Voice emotion analysis.
+
+The website describes an overall score on a 0–10 scale with four risk bands:
+
+- Low.
+- Moderate.
+- High.
+- Critical.
+
+Preserve this interface while documenting the limitations of the prototype.
+
+Do not combine unrelated probability scores blindly.
+
+First, define and document a justified mapping from each module's output to a common scale.
+
+Create a configurable weighting system.
+
+Example starting weights for a software prototype:
+
+- Behaviour: 35%.
+- Chat: 30%.
+- Face: 15%.
+- Voice: 20%.
+
+These weights are illustrative configuration values, not clinically validated parameters.
+
+Do not present them as research findings or scientifically established weights.
+
+The fusion service must:
+
+1. Accept the completed assessment's actual results.
+2. Validate the origin and ownership of every result.
+3. Map available results onto the documented common scale.
+4. Apply the configured weights.
+5. Handle missing modalities correctly.
+6. Calculate a score between 0 and 10.
+7. Return the risk band using documented thresholds.
+8. Explain the main contributing factors.
+9. Record the algorithm version.
+10. Save the final result.
+11. Prevent duplicate finalization or handle retries safely.
+12. Provide recommendations appropriate to the prototype's intended use.
+
+If a modality is missing, renormalize the weights over the available, valid modalities and disclose the reduced coverage.
+
+If no valid modality is available, return an appropriate validation error rather than inventing a score.
+
+Do not interpret a missing result as a zero-risk result.
+
+Define and test the risk-band boundaries, including exact boundary values.
+
+Treat crisis safety signals separately from the ordinary weighted score. A possible crisis must not be hidden by a low average score.
+
+Do not use the overall score to diagnose depression, anxiety, or any other medical condition.
+
+Make it clear in the interface that the score is an experimental wellbeing-screening indicator and not a validated clinical prediction.
+
+---
+
+# 12. ASSESSMENT WORKFLOW
+
+Connect the four assessment steps into one coherent workflow.
+
+The required sequence is:
+
+Step 1: Behavioural assessment.
+
+Step 2: Chat counselling and text analysis.
+
+Step 3: Facial emotion analysis.
+
+Step 4: Voice emotion analysis.
+
+Final step: Fused result and dashboard.
+
+The workflow must:
+
+- Create a server-side assessment session.
+- Preserve its identifier across the workflow.
+- Associate each result with that assessment.
+- Prevent one user from accessing another user's session.
+- Validate that required steps are complete before finalization.
+- Allow the user to return to earlier steps.
+- Avoid duplicate submissions.
+- Handle failed API requests.
+- Display progress clearly.
+- Save intermediate results when consent permits.
+- Restore incomplete sessions where appropriate.
+- Handle missing modalities transparently.
+- Show the final result only after successful server-side calculation.
+
+Do not depend exclusively on browser memory to maintain the assessment.
+
+Use the backend as the source of truth.
+
+If the user refreshes the page, their authenticated assessment should remain recoverable when persistence is enabled.
+
+Never store sensitive assessment content in URL parameters.
+
+---
+
+# 13. DASHBOARD
+
+Connect the existing dashboard to actual database records.
+
+Implement:
+
+GET /api/v1/dashboard/summary
+
+GET /api/v1/assessments
+
+GET /api/v1/assessments/{assessment_id}
+
+GET /api/v1/assessments/{assessment_id}/result
+
+The dashboard should display:
+
+- The latest completed assessment.
+- Overall score and risk band.
+- Individual modality scores.
+- Available confidence or coverage information.
+- Historical assessment results.
+- Assessment dates.
+- Score trends over time.
+- Previous recommendations.
+- Contributing factors.
+- Completion status.
+- Model and algorithm versions where useful.
+
+Use the existing EmotiX visual style and charts.
+
+All dashboard data must come from authenticated API responses.
+
+Remove fake hardcoded chart data from production paths.
+
+If the user has no completed assessments, display a helpful empty state and a button to start a new assessment.
+
+If some modalities are missing, display their status instead of fabricating values.
+
+Implement pagination for assessment history if required.
+
+Ensure that changing the URL or assessment ID cannot reveal another user's data.
+
+---
+
+# 14. PDF REPORT GENERATION
+
+Implement:
+
+GET /api/v1/reports/assessments/{assessment_id}.pdf
+
+Generate a downloadable PDF using a suitable Python library such as ReportLab.
+
+The report should include:
+
+- EmotiX branding.
+- Report generation date.
+- Assessment date.
+- The user's name only where appropriate and consented to.
+- Assessment ID.
+- Overall score and risk band.
+- Available modality scores.
+- Contributing factors.
+- Recommendations.
+- Missing-modality disclosures.
+- Model and algorithm version.
+- Important limitations and non-diagnostic disclaimer.
+- Verified safety resources where appropriate.
+
+Generate reports from saved server-side assessment results.
+
+Authenticate the request and verify ownership before creating or returning the PDF.
+
+Do not include raw chat messages, audio recordings, or video frames by default.
+
+Return the correct PDF content type and a suitable filename.
+
+Ensure the generated document is readable, formatted correctly, and does not leak another user's information.
+
+---
+
+# 15. REST API DESIGN
+
+Use a consistent API prefix:
+
+/api/v1
+
+Implement the following routes where applicable.
+
+## Health and system
+
+GET /health
+
+GET /api/v1/health
+
+The health endpoints should distinguish basic application health from database and model readiness where appropriate.
+
+Do not expose secrets, internal stack traces, or sensitive configuration.
+
+## Authentication
+
+POST /api/v1/auth/register
+
+POST /api/v1/auth/login
+
+POST /api/v1/auth/logout
+
+GET /api/v1/auth/me
+
+POST /api/v1/auth/change-password
+
+Implement password-reset routes if the email workflow is configured.
+
+## Users
+
+GET /api/v1/users/me
+
+PATCH /api/v1/users/me
+
+DELETE /api/v1/users/me
+
+## Assessments
+
+POST /api/v1/assessments
+
+GET /api/v1/assessments
+
+GET /api/v1/assessments/{assessment_id}
+
+POST /api/v1/assessments/{assessment_id}/finalize
+
+GET /api/v1/assessments/{assessment_id}/result
+
+## Behaviour
+
+POST /api/v1/behaviour/analyze
+
+## Chat
+
+POST /api/v1/chat/sessions
+
+POST /api/v1/chat/message
+
+GET /api/v1/chat/sessions
+
+GET /api/v1/chat/sessions/{session_id}/messages
+
+POST /api/v1/chat/sessions/{session_id}/finish
+
+## Facial analysis
+
+POST /api/v1/face/analyze
+
+## Voice analysis
+
+POST /api/v1/voice/analyze
+
+## Dashboard
+
+GET /api/v1/dashboard/summary
+
+## Reports
+
+GET /api/v1/reports/assessments/{assessment_id}.pdf
+
+Adapt these routes when a more consistent resource-oriented design is appropriate, but document the final route structure and update the frontend accordingly.
+
+Use correct HTTP status codes.
+
+Use Pydantic request and response schemas.
+
+Never return SQLAlchemy objects directly without appropriate serialization.
+
+Do not expose password hashes or internal database fields.
+
+Implement pagination and filtering where needed.
+
+Return predictable JSON errors.
+
+Example:
+
+{
+  "detail": "Invalid assessment data",
+  "code": "VALIDATION_ERROR"
+}
+
+Do not return sensitive debugging information to production clients.
+
+---
+
+# 16. FRONTEND AND BACKEND INTEGRATION
+
+Create a central frontend API service.
+
+For a plain JavaScript frontend, create an appropriate module such as:
+
+`js/api.js`
+
+For a React frontend, use a central module such as:
+
+`src/services/api.js`
+
+Use a configurable backend base URL.

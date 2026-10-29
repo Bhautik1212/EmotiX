@@ -1,0 +1,1 @@
+"""EmotiX application package."""
